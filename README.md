@@ -36,7 +36,7 @@ chromedriver_path ="C:\\Users\\<insert actual path>\\chromedriver.exe"
 get_reviews(app_id,chromedriver_path)
 ```
 
-###### Arguments for books_on_shelf:
+###### Arguments for get_reviews:
 - **app_id**: App ID of the application given in the play store page url (Example: com.appname.extension )
 - **chromedriver_path**: path of chromedriver (align the version with your chrome version, see [Resources](#resources))
 
