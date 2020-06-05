@@ -3,7 +3,7 @@
 Codes to scrape reviews about any Android App on [Google Play Store](https://play.google.com/store/apps/)
 
 ## Modules:
-- __[GooglePlayStoreScrape.py]__ : Extracts all information about reviews of any app
+- __GooglePlayStoreScrape.py__ : Extracts all information about reviews of any app
     <br /> - _[get_reviews](#get_reviews)_
  
 ## Requirements
