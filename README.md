@@ -1,4 +1,4 @@
-# GogglePlayStoreScrape
+# GooglePlayStoreScrape
 
 Codes to scrape reviews about any Android App on [Google Play Store](https://play.google.com/store/apps/)
 
