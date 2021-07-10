@@ -8,30 +8,36 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 import pandas as pd
 import time  
+import chromedriver_binary
+import sys,os
 
 
-def get_reviews(app_id,chromedriver_path):
+def get_reviews(app_id):
 
     chrome_options = webdriver.ChromeOptions()
-    driver = webdriver.Chrome(executable_path = chromedriver_path)
+    driver = webdriver.Chrome()
     link = ''.join(["https://play.google.com/store/apps/details?id=",app_id,"&hl=en_IN&showAllReviews=true"])
+    print('--------------------')
+    print('Opening Link: ',link)
     driver.get(link)
 
-    number_review =  int(int(BeautifulSoup(driver.find_element_by_xpath("//span[@class='AYi5wd TBRnV']").get_attribute('innerHTML'), "html.parser").text.replace(',', ''))/100)
+    number_review =  int(int(BeautifulSoup(driver.find_element_by_xpath("//span[@class='AYi5wd TBRnV']").get_attribute('innerHTML'), "html.parser").text.replace(',', '')))
+    number_review_loop = int(number_review/100) +1
 
-    for j in range(0,number_review):
+    for j in range(0,number_review_loop):
         for i in range(0,5):
             driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
             time.sleep(3)
-        if(j == 0):
-            show_more_button = driver.find_element_by_xpath("//div[@class='U26fgb O0WRkf oG5Srb C0oVfc n9lfJ']")
-        else:
-            show_more_button = driver.find_element_by_xpath("//div[@class='U26fgb O0WRkf oG5Srb C0oVfc n9lfJ M9Bg4d']")
-        time.sleep(2)
-        show_more_button.click()
-
-        
-
+        try:
+            if(j == 0):
+                show_more_button = driver.find_element_by_xpath("//div[@class='U26fgb O0WRkf oG5Srb C0oVfc n9lfJ']")
+            else:
+                show_more_button = driver.find_element_by_xpath("//div[@class='U26fgb O0WRkf oG5Srb C0oVfc n9lfJ M9Bg4d']")
+            time.sleep(2)
+            show_more_button.click()
+        except:
+            pass
+    
     full_review_list =[]
     review_list = []
     date = []
@@ -50,11 +56,11 @@ def get_reviews(app_id,chromedriver_path):
         except:
             date.append(0)
         try:
-            full_review_list.append(page_content.findAll('span', attrs = {"jsname":"fbQN7e"})) 
+            full_review_list.append(page_content.findAll('span', attrs = {"jsname":"fbQN7e"})[0].string) 
         except:
             full_review_list.append(0) 
         try:
-            review_list.append(page_content.findAll('span', attrs = {"jsname":"bN97Pc"}))
+            review_list.append(page_content.findAll('span', attrs = {"jsname":"bN97Pc"})[0].string)
         except:
             review_list.append(0)
         try:
@@ -62,7 +68,8 @@ def get_reviews(app_id,chromedriver_path):
         except:
             name.append(0)
         try:
-            reply.append(page_content.findAll('div', attrs = {"class":"LVQB0b"})) 
+            reply_start = int(len(page_content.find('div', attrs = {"class":"LVQB0b"}).find('span', attrs = {"class":"X43Kjb"}).text)+len(page_content.findAll('span', attrs = {"class":"p2TkOb"})[1].string))
+            reply.append(page_content.findAll('div', attrs = {"class":"LVQB0b"})[0].text[reply_start:]) 
         except:
             reply.append(0) 
         try:
@@ -85,4 +92,8 @@ def get_reviews(app_id,chromedriver_path):
         'rating':rating })
 
     review_data.to_csv(''.join(["Reviews_",app_id,".csv"]))
-    print (''.join(["Reviews Extracted ",number_review,"Reviews Found"]))
+    print('Saving File at: ',os.getcwd() )
+    print (''.join(["Reviews Extracted ",str(len(review_data)-1)," Reviews Found"]))
+
+if __name__ == '__main__':
+    get_reviews(sys.argv[1])
