@@ -55,6 +55,5 @@ gpss.get_reviews(app_id)
 - **[HTML Parser](https://docs.python.org/3/library/html.parser.html)**
     
 ## Project Links:
-- **[PyPI] (https://pypi.python.org)**
-- **[GitHub] (https://github.com/apurvasijaria/GooglePlayStoreScrape)**
-- **[Full Documentation] ()**
+- **[PyPI](https://pypi.python.org/)**
+- **[GitHub](https://github.com/apurvasijaria/GooglePlayStoreScrape/)**
