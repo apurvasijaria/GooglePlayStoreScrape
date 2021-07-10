@@ -1,0 +1,14 @@
+LICENSE
+README.md
+setup.py
+GooglePlayStoreScrape/src/GooglePlayStoreScrape.egg-info/PKG-INFO
+GooglePlayStoreScrape/src/GooglePlayStoreScrape.egg-info/SOURCES.txt
+GooglePlayStoreScrape/src/GooglePlayStoreScrape.egg-info/dependency_links.txt
+GooglePlayStoreScrape/src/GooglePlayStoreScrape.egg-info/requires.txt
+GooglePlayStoreScrape/src/GooglePlayStoreScrape.egg-info/top_level.txt
+GooglePlayStoreScrape/src/GooglePlayStoreScrape.py
+GooglePlayStoreScrape/src/GooglePlayStoreScrape.egg-info/PKG-INFO
+GooglePlayStoreScrape/src/GooglePlayStoreScrape.egg-info/SOURCES.txt
+GooglePlayStoreScrape/src/GooglePlayStoreScrape.egg-info/dependency_links.txt
+GooglePlayStoreScrape/src/GooglePlayStoreScrape.egg-info/requires.txt
+GooglePlayStoreScrape/src/GooglePlayStoreScrape.egg-info/top_level.txt

@@ -1,0 +1,4 @@
+chromedriver_binary==91.0.4472.101.0
+pandas
+selenium
+bs4
