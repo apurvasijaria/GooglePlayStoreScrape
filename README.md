@@ -85,10 +85,10 @@ app_id = 'com.appname.extension' #example in the app url
 country = 'IN'
 language = 'en'
 
-gpss.get_reviews(app_id,language,country)
+gpss.get_info(app_id,language,country)
 ```
 
-###### Arguments for get_reviews:
+###### Arguments for get_info:
 - **app_id**: App ID of the application given in the play store page url (Example: com.appname.extension )
 - **language**: Language of the application given in the play store page url (Example: en ), Default value = 'en'
 - **country**: Coutry of the application given in the play store page url (Example: IN ), Default value = 'IN'
