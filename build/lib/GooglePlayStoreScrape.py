@@ -12,11 +12,11 @@ import chromedriver_binary
 import sys,os
 
 
-def get_reviews(app_id):
+def get_reviews(app_id,language = 'en',country= 'IN'):
 
     chrome_options = webdriver.ChromeOptions()
     driver = webdriver.Chrome()
-    link = ''.join(["https://play.google.com/store/apps/details?id=",app_id,"&hl=en_IN&showAllReviews=true"])
+    link = ''.join(["https://play.google.com/store/apps/details?id=",app_id,"&hl=",language,"_",country,"&showAllReviews=true"])
     print('--------------------')
     print('Opening Link: ',link)
     driver.get(link)
@@ -45,6 +45,7 @@ def get_reviews(app_id):
     reply = []
     reply_date =[]
     rating =[]
+    votes =[]
        
     
     reviews_all = driver.find_elements_by_xpath("//div[@class='d15Mdf bAhLNe']")
@@ -80,6 +81,10 @@ def get_reviews(app_id):
             reply_date.append(page_content.findAll('span', attrs = {"class":"p2TkOb"})[1].string)
         else:
             reply_date.append("")
+        try:
+            votes.append(page_content.find('div', attrs = {"class":"jUL89d y92BAb"}).string)
+        except:
+            votes.append(0) 
         
         
     review_data = pd.DataFrame({
@@ -89,11 +94,80 @@ def get_reviews(app_id):
         'reply': reply ,
         'reply_date': reply_date ,
         'date': date,
-        'rating':rating })
+        'rating':rating,
+        'helpful-votes':votes})
 
     review_data.to_csv(''.join(["Reviews_",app_id,".csv"]))
     print('Saving File at: ',os.getcwd() )
     print (''.join(["Reviews Extracted ",str(len(review_data)-1)," Reviews Found"]))
 
+def get_info(app_id,language = 'en',country = 'IN'):
+    chrome_options = webdriver.ChromeOptions()
+    driver = webdriver.Chrome()
+    link = ''.join(["https://play.google.com/store/apps/details?id=",app_id,"&hl=",language,"_",country])
+    print('--------------------')
+    print('Opening Link: ',link)
+    driver.get(link)
+  
+    attr =[]
+    att_value = []
+       
+    names = driver.find_elements_by_xpath("//div[@class='oQ6oV']")[0]
+    name_content = names.get_attribute('innerHTML')
+    page_content = BeautifulSoup(name_content, "html.parser")
+    
+    ##Add name
+    attr.append('Name')
+    att_value.append(page_content.find('h1', attrs = {"itemprop":"name"}).text)
+    
+    ##Add genre 
+    attr.append('Genre')
+    att_value.append(page_content.find('a', attrs = {"itemprop":"genre"}).text)
+    
+    ##Average Ratings
+    attr.append('Number of Ratings')
+    att_value.append(page_content.find('span', attrs = {"class":"AYi5wd TBRnV"}).text)
+    
+    ##Average rating
+    attr.append('Average Rating')
+    att_value.append(page_content.find('div', attrs = {"class":"pf5lIe"}).findAll('div')[0].get('aria-label'))
+    
+    add_info = driver.find_elements_by_xpath("//div[@class='hAyfc']")
+    for i in add_info:
+        info_content = i.get_attribute('innerHTML')
+        page_content = BeautifulSoup(info_content, "html.parser") 
+        try:
+            attr.append(page_content.findAll('div', attrs = {"class":"BgcNfc"})[0].string)
+        except:
+            attr.append(0)
+        try:
+            att_value.append(page_content.findAll('span', attrs = {"class":"htlgb"})[0].text) 
+        except:
+            att_value.append(0)
+        add_links = page_content.find('span', attrs = {"class":"htlgb"}).findAll('a')
+        for l in add_links:
+           attr.append(l.text)
+           att_value.append(l.get('href'))
+    new = driver.find_elements_by_xpath("//div[@class='W4P4ne ']")[2]
+    new_content = new.get_attribute('innerHTML')
+    page_content = BeautifulSoup(new_content, "html.parser")
+    attr.append(page_content.find('h2',attrs={"class":"Rm6Gwb"}).text)
+    att_value.append(page_content.find('div',attrs={"class":"DWPxHb"}).text)
+   
+    desc = driver.find_elements_by_xpath("//div[@class='DWPxHb']")[0]
+    desc_content = desc.get_attribute('innerHTML')
+    page_content = BeautifulSoup(desc_content , "html.parser").text
+   
+    attr.append('description')
+    att_value.append(page_content)
+            
+    additional_info = pd.DataFrame({
+        'Attributes': attr,
+        'Value': att_value })
+
+    additional_info.to_csv(''.join(["Info_",app_id,".csv"]))
+    print('Saving File at: ',os.getcwd() )
+    print (''.join(["Info Extracted ",str(len(additional_info))," Info found"]))
+    
 if __name__ == '__main__':
-    get_reviews(sys.argv[1])
+     globals()[sys.argv[1]](sys.argv[2],sys.argv[3],sys.argv[4])
