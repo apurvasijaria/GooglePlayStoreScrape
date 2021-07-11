@@ -57,3 +57,9 @@ gpss.get_reviews(app_id)
 ## Project Links:
 - **[PyPI](https://pypi.org/project/GooglePlayStoreScrape)**
 - **[GitHub](https://github.com/apurvasijaria/GooglePlayStoreScrape/)**
+
+
+**WIP**
+
+- Currently Only for English and Indian App, working on extending the scope
+- Extracting more Information other than just reviews
